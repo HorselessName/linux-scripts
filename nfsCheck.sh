@@ -1,5 +1,5 @@
 #!/bin/bash
-# Verifica a conexão com o NFS
+# Verifica se os arquivos de rede via NFS estao montados
 
 # Feito por Raul Chiarella
 # Objetivo desse Shell Script é armazenar os valores de STATUS do NFS para consultar no Zabbix
@@ -19,7 +19,6 @@ NFS_SERVER='IP do Servidor NFS'
 chmod 777 $NFS_SHARE/nfsTest
 chown zabbix:zabbix $NFS_SHARE/nfsTest
 
-
 # ACERTOS/ERROS em JSON:
 # Diretorio NFS esta/nao esta montado -> NFS_MOUNT
 # Falha/sucesso na gravacao do arquivo -> NFS_WRITE
@@ -33,32 +32,32 @@ mountpoint -q $NFS_SHARE
 if [ $? -eq 0 ]
 then
     # "Diretorio NFS esta montado"
-    declare -i NFS_MOUNT=1
+    NFS_MOUNT=1
     touch /mnt/dados/nfsTest 2>/dev/null
     if [ $? -eq 0 ]
     then
         # "Consegui gravar arquivo no ponto montado..."
-        declare -i NFS_WRITE=1
-        declare -i NFS_PING=1
+        NFS_WRITE=1
+        NFS_PING=1
     else
         # "ERRO: Falha ao gravar arquivo no NFS Share"
-        declare -i NFS_WRITE=0
-        declare -i NFS_PING=0
+        NFS_WRITE=0
+        NFS_PING=0
     fi
 
 else
     # "ERRO: Diretorio NFS nao esta montado"
-    declare -i NFS_MOUNT=0
-    declare -i NFS_WRITE=0
+    NFS_MOUNT=0
+    NFS_WRITE=0
     # "IP do Servidor NFS: " $NFS_SERVER
     ping -c 3 -w 3 $NFS_SERVER 1>/dev/null 2>&1
     if [ $? -eq 0 ]
     then
 	    # "Ping no servidor NFS OK"
-        declare -i NFS_PING=1
+        NFS_PING=1
     else
 	    # "Servidor NFS indisponivel"
-        declare -i NFS_PING=0
+        NFS_PING=0
     fi
 fi
 

@@ -1,0 +1,43 @@
+#!/bin/bash
+# Testa se as pastas NFS foram compartilhadas e comunica com o NFS Client
+
+NFS_SHARE='/mnt/dados'
+NFS_CLIENT='IP do Cliente NFS'
+
+# Grep documentation:
+# https://www.gnu.org/software/grep/manual/grep.html#Exit-Status
+
+showmount -e | grep -q $NFS_SHARE
+
+if [ $? -eq 0 ]
+then
+    # "Diretorio NFS esta compartilhado"
+    NFS_MOUNT=1
+    ping -c 3 -w 3 $NFS_CLIENT 1>/dev/null 2>&1
+    if [ $? -eq 0 ]
+    then
+	    # "Ping no servidor NFS OK"
+        NFS_PING=1
+    else
+	    # "Servidor NFS indisponivel"
+        NFS_PING=0
+    fi
+
+else
+    # "ERRO: Diretorio NFS nao esta montado"
+    NFS_MOUNT=0
+    # "IP do Servidor NFS: " $NFS_CLIENT
+    ping -c 3 -w 3 $NFS_CLIENT 1>/dev/null 2>&1
+    if [ $? -eq 0 ]
+    then
+	    # "Ping no servidor NFS OK"
+        NFS_PING=1
+    else
+	    # "Servidor NFS indisponivel"
+        NFS_PING=0
+    fi
+fi
+
+# 'Output JSON:'
+echo '{"NFS_MOUNT": "'$NFS_MOUNT'", "NFS_PING": "'$NFS_PING'"}' | python -m json.tool
+exit 0
