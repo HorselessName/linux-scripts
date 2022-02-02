@@ -1,9 +1,9 @@
 #!/bin/bash
 # Modo quiosque - Raspberry PI
 
-SITE1=''
-SITE2=''
-SITE3=''
+LISTA_DE_PROBLEMAS=''
+GRAFICOS=''
+MAPA=''
 
 xset s noblank
 xset s off
@@ -14,7 +14,7 @@ unclutter -idle 0.5 -root &
 sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' /home/pi/.config/chromium/Default/Preferences
 sed -i 's/"exit_type":"Crashed"/"exit_type":"Normal"/' /home/pi/.config/chromium/Default/Preferences
 
-/usr/bin/chromium-browser --noerrdialogs --disable-infobars --kiosk $SITE1 $SITE2 $SITE3 &
+/usr/bin/chromium-browser --force-device-scale-factor=0.90 --noerrdialogs --disable-infobars --kiosk $LISTA_DE_PROBLEMAS $GRAFICOS $MAPA &
 
 while true; do
 xdotool keydown ctrl+Tab; xdotool keyup ctrl+Tab;
