@@ -35,7 +35,6 @@ mysqldump -u"$BD_USER" -p"$BD_SENHA" -h "$BD_HOST" --opt --default-character-set
 # Enviar BKP local p/ OneDrive
 # Ferramenta utilizada: https://github.com/HorselessName/onedrive
 
-
 # Sincroniza os arquivos de uma pasta com outra, e faz upload p/ OneDrive
 rsync -a -v --ignore-existing $BKP_DIR/ $ONEDRIVE_DIR/
 onedrive --synchronize --verbose --single-directory $ONEDRIVE_SUB_DIR
