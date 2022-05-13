@@ -18,6 +18,9 @@ xset -dpms
 # Esconde o mouse a não ser que ele seja ativado
 unclutter -idle 0.5 -root &
 
+# Variavel que puxa o display atual
+# DISPLAY=$(w -oush | grep -Eo ' :[0-9]+' | uniq | cut -d \  -f 2)
+
 sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' /home/pi/.config/chromium/Default/Preferences
 sed -i 's/"exit_type":"Crashed"/"exit_type":"Normal"/' /home/pi/.config/chromium/Default/Preferences
 
